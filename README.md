@@ -52,7 +52,7 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
                 <!-- ↓↓↓↓↓↓↓ 以下内容 ↓↓↓↓↓↓↓ -->
                 <edit-config file="app/src/mainAndroidManifest.xml" mode="merge" target="manifest/application"
                         xmlns:android="http://schemas.androidcom/apk/res/android">
-                        <application android:name="com.alipushPushApplication"android:networkSecurityConfig="@xmlnetwork_security_config" />
+                        <application android:name="com.alipushPushApplication" />
                 </edit-config>
                 <!-- ↑↑↑↑↑↑↑ 以上内容 ↑↑↑↑↑↑↑ -->
             </platform>
