@@ -1,10 +1,10 @@
 {
-  "_resolved": "git+https://github.com/442623641/cordova-plugin-aliyunpush.git",
+  "_resolved": "git+https://github.com/log2c/cordova-plugin-aliyunpush.git",
   "author": {
-    "name": "leozhang"
+    "name": "log2c"
   },
   "bugs": {
-    "url": "https://github.com/442623641/cordova-plugin-aliyunpush/issues"
+    "url": "https://github.com/log2c/cordova-plugin-aliyunpush/issues"
   },
   "bundleDependencies": false,
   "cordova": {
@@ -22,7 +22,7 @@
       "version": ">=5.0.0"
     }
   ],
-  "homepage": "https://github.com/442623641/cordova-plugin-aliyunpush#readme",
+  "homepage": "https://github.com/log2c/cordova-plugin-aliyunpush.git#readme",
   "keywords": [
     "cordova",
     "aliyun",
@@ -34,7 +34,7 @@
   "name": "cordova-plugin-aliyunpush",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/442623641/cordova-plugin-aliyunpush.git"
+    "url": "git+https://github.com/log2c/cordova-plugin-aliyunpush.git"
   },
-  "version": "1.1.0"
+  "version": "1.0.0"
 }
