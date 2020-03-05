@@ -353,12 +353,60 @@
 }
 
 
+- (void)addAlias:(CDVInvokedUrlCommand*)command{
+    NSString* aliases = [command.arguments objectAtIndex:0];
+    if(aliases.length != 0){
+        [[AliyunNotificationLauncher sharedAliyunNotificationLauncher]
+         addAlias:aliases andCallback:^(BOOL result) {
+            CDVPluginResult *cdvresult;
+            if(result){
+                cdvresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }else{
+                cdvresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+            }
+            [self.commandDelegate sendPluginResult:cdvresult callbackId:command.callbackId];
+        }];
+    }
+}
+
+- (void)removeAlias:(CDVInvokedUrlCommand*)command{
+
+    NSString *aliases = [command.arguments objectAtIndex:0];
+
+    if (aliases.length!=0) {
+        [[AliyunNotificationLauncher sharedAliyunNotificationLauncher]
+         removeAlias:aliases andCallback:^(BOOL result) {
+            CDVPluginResult *cdvresult;
+
+            if(result){
+                cdvresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }else{
+                cdvresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+            }
+
+            [self.commandDelegate sendPluginResult:cdvresult callbackId:command.callbackId];
+        }];
+    }
+}
+
+- (void)listAliases:(CDVInvokedUrlCommand*)command{
+    [[AliyunNotificationLauncher sharedAliyunNotificationLauncher]
+     listAliases:^(id result) {
+
+        CDVPluginResult *cdvresult;
+
+        if(result == [NSNull null] ){
+
+            cdvresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        }else{
+            cdvresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:(NSDictionary *)result];
+        }
+
+        [self.commandDelegate sendPluginResult:cdvresult callbackId:command.callbackId];
+
+    }];
+}
+
 
 
 @end
-
-
-
-
-
-

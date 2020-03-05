@@ -50,4 +50,19 @@
  */
 - (void)listTags:(CDVInvokedUrlCommand*)command;
 
+/**
+ *添加别名
+ */
+- (void)addAlias:(CDVInvokedUrlCommand*)command;
+
+/**
+ *删除别名
+ */
+- (void)removeAlias:(CDVInvokedUrlCommand*)command;
+
+/**
+ *查询别名
+ */
+- (void)listAliases:(CDVInvokedUrlCommand*)command;
+
 @end

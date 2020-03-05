@@ -38,5 +38,10 @@
 
 - (void)unbindAccountAndCallback:(void (^)(BOOL result))callback;
 
+- (void)addAlias:(NSString *)alias andCallback:(void (^)(BOOL result))callback;
+
+- (void)removeAlias:(NSString *)alias andCallback:(void (^)(BOOL result))callback;
+
+- (void)listAliases:(void (^)(id result))callback;
 
 @end

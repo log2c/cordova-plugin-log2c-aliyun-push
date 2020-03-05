@@ -2,11 +2,11 @@ var exec = require('cordova/exec');
 
 var AliyunPush = {
     registered: false,
-    errorCallback: function(msg) {
+    errorCallback: function (msg) {
         console.log('AliyunPush Callback Error: ' + msg)
     },
 
-    callNative: function(name, args, successCallback, errorCallback) {
+    callNative: function (name, args, successCallback, errorCallback) {
         if (errorCallback) {
             cordova.exec(successCallback, errorCallback, 'AliyunPush', name, args)
         } else {
@@ -17,30 +17,30 @@ var AliyunPush = {
     /**
      * 阿里云推送消息透传回调
      * @param  {Function} successCallback 成功回调
-     * @return {void}  
+     * @return {void}
      */
-    onMessage: function(successCallback) {
+    onMessage: function (successCallback) {
         this.callNative('onMessage', [], successCallback)
     },
-    
+
 
     /**
      * 没有权限时，请求开通通知权限，其他路过
-     * @param {} successCallback 
-     * @param {*} errorCallback 
+     * @param {} successCallback
+     * @param {*} errorCallback
      */
-    requireNotifyPermission:function(msg,successCallback, errorCallback){
-        this.callNative('requireNotifyPermission', [msg], successCallback,errorCallback);
+    requireNotifyPermission: function (msg, successCallback, errorCallback) {
+        this.callNative('requireNotifyPermission', [msg], successCallback, errorCallback);
     },
 
     /**
      * 获取设备唯一标识deviceId，deviceId为阿里云移动推送过程中对设备的唯一标识（并不是设备UUID/UDID）
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
-     * @return {void}  
+     * @return {void}
      */
-    getRegisterId: function(successCallback, errorCallback) {
-        this.callNative('getRegisterId', [], successCallback,errorCallback);
+    getRegisterId: function (successCallback, errorCallback) {
+        this.callNative('getRegisterId', [], successCallback, errorCallback);
     },
 
     /**
@@ -48,9 +48,9 @@ var AliyunPush = {
      * @param  {string} account         账号
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
-     * @return {void} 
+     * @return {void}
      */
-    bindAccount: function(account, successCallback, errorCallback) {
+    bindAccount: function (account, successCallback, errorCallback) {
         this.callNative('bindAccount', [account], successCallback, errorCallback);
     },
 
@@ -58,9 +58,9 @@ var AliyunPush = {
      * 阿里云推送解除账号名,退出切换账号时调用
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
-     * @return {void} 
+     * @return {void}
      */
-    unbindAccount: function(successCallback, errorCallback) {
+    unbindAccount: function (successCallback, errorCallback) {
         this.callNative('unbindAccount', [], successCallback, errorCallback);
     },
 
@@ -69,9 +69,9 @@ var AliyunPush = {
      * @param  {string[]} tags            标签列表
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
-     * @return {void}  
+     * @return {void}
      */
-    bindTags: function(tags, successCallback, errorCallback) {
+    bindTags: function (tags, successCallback, errorCallback) {
         this.callNative('bindTags', [tags], successCallback, errorCallback)
     },
 
@@ -80,9 +80,9 @@ var AliyunPush = {
      * @param  {string[]} tags            标签列表
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
-     * @return {void}               
+     * @return {void}
      */
-    unbindTags: function(tags, successCallback, errorCallback) {
+    unbindTags: function (tags, successCallback, errorCallback) {
         this.callNative('unbindTags', [tags], successCallback, errorCallback)
     },
 
@@ -90,10 +90,40 @@ var AliyunPush = {
      * 阿里云推送解除绑定标签
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
-     * @return {void}           
+     * @return {void}
      */
-    listTags: function(successCallback, errorCallback) {
-        this.callNative('listTags', [], successCallback,errorCallback)
+    listTags: function (successCallback, errorCallback) {
+        this.callNative('listTags', [], successCallback, errorCallback)
+    },
+
+    /**
+     * 添加别名
+     * @param  {Function} successCallback 成功回调
+     * @param  {Function} errorCallback   失败回调
+     * @return {void}
+     */
+    addAlias: function (alias, successCallback, errorCallback) {
+        this.callNative('addAlias', [alias], successCallback, errorCallback)
+    },
+
+    /**
+     * 解绑别名
+     * @param  {Function} successCallback 成功回调
+     * @param  {Function} errorCallback   失败回调
+     * @return {void}
+     */
+    removeAlias: function (alias, successCallback, errorCallback) {
+        this.callNative('removeAlias', [alias], successCallback, errorCallback)
+    },
+
+    /**
+     * 删除别名
+     * @param  {Function} successCallback 成功回调
+     * @param  {Function} errorCallback   失败回调
+     * @return {void}
+     */
+    listAliases: function (successCallback, errorCallback) {
+        this.callNative('listAliases', [], successCallback, errorCallback)
     },
 
     AliyunPush: AliyunPush
