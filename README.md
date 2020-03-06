@@ -4,7 +4,7 @@
 
 Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂商辅助通道,`FCM`、`OPPO`等后续再补充
 
-## 依赖版本
+## 依赖说明
 * Android:
     ```groovy
     dependencies {
@@ -30,7 +30,6 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
       --variable ANDROID_APP_SECRET="***" \
       --variable IOS_APP_KEY="***" \
       --variable IOS_APP_SECRET="***" \
-      --variable IOS_BUNDLE_ID="***" \
       --variable HUAWEI_APPID="***" \
       --variable MIPUSH_APPID="***" \
       --variable MIPUSH_APPKEY="***" \
@@ -52,7 +51,7 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
                 <!-- ↓↓↓↓↓↓↓ 以下内容 ↓↓↓↓↓↓↓ -->
                 <edit-config file="app/src/mainAndroidManifest.xml" mode="merge" target="manifest/application"
                         xmlns:android="http://schemas.androidcom/apk/res/android">
-                        <application android:name="com.alipushPushApplication" />
+                        <application android:name="com.alipush.PushApplication" />
                 </edit-config>
                 <!-- ↑↑↑↑↑↑↑ 以上内容 ↑↑↑↑↑↑↑ -->
             </platform>
@@ -165,3 +164,12 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
     }
 
 ```
+
+## 常见问题
+
+1. `Android 8.0`以上无法获取到`Token`
+    检查是否配置了`network_security_config.xml`信息，具体百度了解
+    
+1. `iOS`无法获取到`Token`
+    `Xcode`中确认开启以下两项
+    ![](https://raw.githubusercontent.com/log2c/cordova-plugin-aliyunpush/develop/screenshoot/iOS_notification_config.png)
