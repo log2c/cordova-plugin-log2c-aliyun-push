@@ -9,7 +9,6 @@
     <preference name="ANDROID_APP_SECRET"/>
     <preference name="IOS_APP_KEY"/>
     <preference name="IOS_APP_SECRET"/>
-    <preference name="IOS_BUNDLE_ID"/>
     <preference name="HUAWEI_APPID"/>
     <preference name="MIPUSH_APPID"/>
     <preference name="MIPUSH_APPKEY"/>
