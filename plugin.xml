@@ -70,14 +70,12 @@
         <config-file parent="aps-environment" target="*-Release.plist">
             <string>production</string>
         </config-file>
-        <config-file target="*AliyunEmasServices-Info.plist" parent="config">
+        <config-file target="*-Info.plist" parent="aliyun push config">
             <dict>
-                <key>emas.appKey</key>
+                <key>appKey</key>
                 <string>$IOS_APP_KEY</string>
-                <key>emas.appSecret</key>
+                <key>appSecret</key>
                 <string>$IOS_APP_SECRET</string>
-                <key>emas.bundleId</key>
-                <string>$IOS_BUNDLE_ID</string>
             </dict>
         </config-file>
         <header-file src="src/ios/Plugins/AliyunPush.h" />
@@ -96,6 +94,5 @@
         <framework src="src/ios/Aliyun.frameworks/CloudPushSDK.framework" custom="true" />
         <framework src="src/ios/Aliyun.frameworks/UTDID.framework" custom="true" />
         <framework src="src/ios/Aliyun.frameworks/UTMini.framework" custom="true" />
-        <resource-file src="src/ios/AliyunEmasServices-Info.plist" />
     </platform>
 </plugin>

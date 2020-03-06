@@ -137,17 +137,22 @@
 
 #pragma mark SDK Init AliyunEmasServices-Info.plist
 - (void)initCloudPush {
+
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary *aliyunPushConfig = [infoDictionary objectForKey:@"aliyun push config"];
+
+    NSString *appKey = [aliyunPushConfig objectForKey:@"appKey"];
+    NSString *appSecret = [aliyunPushConfig objectForKey:@"appSecret"];
+
     // 正式上线建议关闭
     [CloudPushSDK turnOnDebug];
 
-    // SDK初始化，无需输入配置信息
-    // 请从控制台下载AliyunEmasServices-Info.plist配置文件，并正确拖入工程
-    [CloudPushSDK autoInit:^(CloudPushCallbackResult *res) {
-        if (res.success) {
-            NSLog(@"Push SDK init success, deviceId: %@.", [CloudPushSDK getDeviceId]);
-        } else {
-            NSLog(@"Push SDK init failed, error: %@", res.error);
-        }
+    [CloudPushSDK asyncInit:appKey appSecret:appSecret callback:^(CloudPushCallbackResult *res) {
+            if (res.success) {
+                NSLog(@"Push SDK init success, deviceId: %@.", [CloudPushSDK getDeviceId]);
+            } else {
+                    NSLog(@"Push SDK init failed, error: %@", res.error);
+            }
     }];
 }
 
