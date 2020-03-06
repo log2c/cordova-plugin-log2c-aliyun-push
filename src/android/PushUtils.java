@@ -63,30 +63,30 @@ public class PushUtils {
     static void initPushService(final Application application) throws PackageManager.NameNotFoundException {
         PushServiceFactory.init(application);
         final CloudPushService pushService = PushServiceFactory.getCloudPushService();
-        // pushService.setLogLevel(CloudPushService.LOG_DEBUG);
-        // pushService.register(application, new CommonCallback() {
-        //     @Override
-        //     public void onSuccess(String response) {
-        //         String deviceId = pushService.getDeviceId();
-        //         Log.d(TAG, "deviceId: " + deviceId);
-        //         pushService.addAlias("test", new CommonCallback() {
-        //             @Override
-        //             public void onSuccess(String s) {
-        //                 Log.d(TAG, "onSuccess: " + s);
-        //             }
+         pushService.setLogLevel(CloudPushService.LOG_DEBUG);
+         pushService.register(application, new CommonCallback() {
+             @Override
+             public void onSuccess(String response) {
+                 String deviceId = pushService.getDeviceId();
+                 Log.d(TAG, "deviceId: " + deviceId);
+//                 pushService.addAlias("test", new CommonCallback() {
+//                     @Override
+//                     public void onSuccess(String s) {
+//                         Log.d(TAG, "onSuccess: " + s);
+//                     }
+//
+//                     @Override
+//                     public void onFailed(String s, String s1) {
+//                         Log.e(TAG, "onFailed: " + s + ", " + s1);
+//                     }
+//                 });
+             }
 
-        //             @Override
-        //             public void onFailed(String s, String s1) {
-        //                 Log.e(TAG, "onFailed: " + s + ", " + s1);
-        //             }
-        //         });
-        //     }
-
-        //     @Override
-        //     public void onFailed(String errorCode, String errorMessage) {
-        //         Log.d(TAG, "init cloudChannel failed -- errorCode:" + errorCode + " -- errorMessage:" + errorMessage);
-        //     }
-        // });
+             @Override
+             public void onFailed(String errorCode, String errorMessage) {
+                 Log.d(TAG, "init cloudChannel failed -- errorCode:" + errorCode + " -- errorMessage:" + errorMessage);
+             }
+         });
 
         createDefaultChannel(application);
 
