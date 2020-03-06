@@ -2,6 +2,7 @@ package com.alipush;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
@@ -167,8 +168,79 @@ public class AliyunPush extends CordovaPlugin {
             });
             sendNoResultPluginResult(callbackContext);
             ret = true;
-        }
+        } else if ("addAlias".equalsIgnoreCase(action)) {
+            try {
+                final String alias = args.getJSONArray(0).getString(0);
+                if (TextUtils.isEmpty(alias)) {
+                    return false;
+                }
+                LOG.d(TAG, "PushManager#addAlias");
+                cordova.getThreadPool().execute(() -> {
+                    pushService.addAlias(alias, new CommonCallback() {
+                        @Override
+                        public void onFailed(String s, String s1) {
+                            resError(callbackContext, s, s1);
+                        }
 
+                        @Override
+                        public void onSuccess(String s) {
+                            callbackContext.success(s);
+                        }
+                    });
+
+                });
+                sendNoResultPluginResult(callbackContext);
+                ret = true;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+
+        } else if ("removeAlias".equalsIgnoreCase(action)) {
+            try {
+                final String alias = args.getJSONArray(0).getString(0);
+                if (TextUtils.isEmpty(alias)) {
+                    return false;
+                }
+                LOG.d(TAG, "PushManager#removeAlias");
+                cordova.getThreadPool().execute(() -> {
+                    pushService.removeAlias(alias, new CommonCallback() {
+                        @Override
+                        public void onFailed(String s, String s1) {
+                            resError(callbackContext, s, s1);
+                        }
+
+                        @Override
+                        public void onSuccess(String s) {
+                            callbackContext.success(s);
+                        }
+                    });
+
+                });
+                sendNoResultPluginResult(callbackContext);
+                ret = true;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if ("listAliases".equalsIgnoreCase(action)) {
+            cordova.getThreadPool().execute(() -> {
+                LOG.d(TAG, "PushManager#listAliases");
+                pushService.listAliases(new CommonCallback() {
+                    @Override
+                    public void onFailed(String s, String s1) {
+                        resError(callbackContext, s, s1);
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        LOG.d(TAG, "onSuccess:" + s);
+                        callbackContext.success(s);
+                    }
+                });
+
+            });
+            sendNoResultPluginResult(callbackContext);
+            ret = true;
+        }
         return ret;
     }
 
