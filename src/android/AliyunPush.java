@@ -2,7 +2,6 @@ package com.alipush;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
@@ -18,9 +17,6 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -102,13 +98,15 @@ public class AliyunPush extends CordovaPlugin {
             sendNoResultPluginResult(callbackContext);
             ret = true;
         } else if ("bindTags".equalsIgnoreCase(action)) {
-            final String[] tags = getTagsFromArgs(args);
+            final int target = args.getInt(0);
+            final String[] tags = toStringArray(args.getJSONArray(1));
+            final String alias = args.length() > 2 ? args.getString(2) : null;
 
             cordova.getThreadPool().execute(() -> {
                 LOG.d(TAG, "PushManager#bindTags");
 
                 if (tags != null && tags.length > 0) {
-                    pushService.bindTag(pushService.DEVICE_TARGET, tags, null, new CommonCallback() {
+                    pushService.bindTag(target, tags, alias, new CommonCallback() {
                         @Override
                         public void onSuccess(String s) {
                             callbackContext.success(s);
@@ -125,13 +123,15 @@ public class AliyunPush extends CordovaPlugin {
             sendNoResultPluginResult(callbackContext);
             ret = true;
         } else if ("unbindTags".equalsIgnoreCase(action)) {
-            final String[] tags = getTagsFromArgs(args);
+            final int target = args.getInt(0);
+            final String[] tags = toStringArray(args.getJSONArray(1));
+            final String alias = args.length() > 2 ? args.getString(2) : null;
             cordova.getThreadPool().execute(() -> {
                 LOG.d(TAG, "PushManager#unbindTags");
 
                 if (tags != null && tags.length > 0) {
 
-                    pushService.unbindTag(pushService.DEVICE_TARGET, tags, "", new CommonCallback() {
+                    pushService.unbindTag(target, tags, alias, new CommonCallback() {
                         @Override
                         public void onFailed(String s, String s1) {
                             resError(callbackContext, s, s1);
@@ -168,105 +168,9 @@ public class AliyunPush extends CordovaPlugin {
             });
             sendNoResultPluginResult(callbackContext);
             ret = true;
-        } else if ("addAlias".equalsIgnoreCase(action)) {
-            try {
-                final String alias = args.getJSONArray(0).getString(0);
-                if (TextUtils.isEmpty(alias)) {
-                    return false;
-                }
-                LOG.d(TAG, "PushManager#addAlias");
-                cordova.getThreadPool().execute(() -> {
-                    pushService.addAlias(alias, new CommonCallback() {
-                        @Override
-                        public void onFailed(String s, String s1) {
-                            resError(callbackContext, s, s1);
-                        }
-
-                        @Override
-                        public void onSuccess(String s) {
-                            callbackContext.success(s);
-                        }
-                    });
-
-                });
-                sendNoResultPluginResult(callbackContext);
-                ret = true;
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-
-        } else if ("removeAlias".equalsIgnoreCase(action)) {
-            try {
-                final String alias = args.getJSONArray(0).getString(0);
-                if (TextUtils.isEmpty(alias)) {
-                    return false;
-                }
-                LOG.d(TAG, "PushManager#removeAlias");
-                cordova.getThreadPool().execute(() -> {
-                    pushService.removeAlias(alias, new CommonCallback() {
-                        @Override
-                        public void onFailed(String s, String s1) {
-                            resError(callbackContext, s, s1);
-                        }
-
-                        @Override
-                        public void onSuccess(String s) {
-                            callbackContext.success(s);
-                        }
-                    });
-
-                });
-                sendNoResultPluginResult(callbackContext);
-                ret = true;
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        } else if ("listAliases".equalsIgnoreCase(action)) {
-            cordova.getThreadPool().execute(() -> {
-                LOG.d(TAG, "PushManager#listAliases");
-                pushService.listAliases(new CommonCallback() {
-                    @Override
-                    public void onFailed(String s, String s1) {
-                        resError(callbackContext, s, s1);
-                    }
-
-                    @Override
-                    public void onSuccess(String s) {
-                        LOG.d(TAG, "onSuccess:" + s);
-                        callbackContext.success(s);
-                    }
-                });
-
-            });
-            sendNoResultPluginResult(callbackContext);
-            ret = true;
         }
+
         return ret;
-    }
-
-
-    /**
-     * 将json字符串转换为列表
-     *
-     * @param args json字符串
-     * @return tags的列表
-     */
-    private String[] getTagsFromArgs(JSONArray args) throws JSONException {
-        List<String> tags = null;
-        args = args.getJSONArray(0);
-        if (args != null && args.length() > 0) {
-            int len = args.length();
-            tags = new ArrayList<String>(len);
-            for (int inx = 0; inx < len; inx++) {
-                try {
-                    tags.add(args.getString(inx));
-                } catch (JSONException e) {
-                    LOG.e(TAG, e.getMessage(), e);
-                }
-            }
-        }
-
-        return tags.toArray(new String[tags.size()]);
     }
 
     private void resError(CallbackContext callbackContext, String reason, String res) {
@@ -300,5 +204,15 @@ public class AliyunPush extends CordovaPlugin {
         PluginResult result = new PluginResult(PluginResult.Status.OK, data);
         result.setKeepCallback(true);
         pushCallbackContext.sendPluginResult(result);
+    }
+
+    private static String[] toStringArray(JSONArray array) {
+        if (array == null)
+            return null;
+        String[] arr = new String[array.length()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = array.optString(i);
+        }
+        return arr;
     }
 }

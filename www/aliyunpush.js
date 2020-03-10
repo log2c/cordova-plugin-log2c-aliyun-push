@@ -66,24 +66,27 @@ var AliyunPush = {
 
     /**
      * 阿里云推送绑定标签
+     * @param  {number}   target          目标类型
      * @param  {string[]} tags            标签列表
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
      * @return {void}
      */
-    bindTags: function (tags, successCallback, errorCallback) {
-        this.callNative('bindTags', [tags], successCallback, errorCallback)
+    bindTags: function (target, tags, alias, successCallback, errorCallback) {
+        this.callNative('bindTags', [target, tags, alias], successCallback, errorCallback)
     },
 
     /**
      * 阿里云推送解除绑定标签
+     * @param  {number}   target          目标类型
      * @param  {string[]} tags            标签列表
+     * @param  {string}   alias           别名
      * @param  {Function} successCallback 成功回调
      * @param  {Function} errorCallback   失败回调
      * @return {void}
      */
-    unbindTags: function (tags, successCallback, errorCallback) {
-        this.callNative('unbindTags', [tags], successCallback, errorCallback)
+    unbindTags: function (target, tags, alias, successCallback, errorCallback) {
+        this.callNative('unbindTags', [target, tags, alias], successCallback, errorCallback)
     },
 
     /**

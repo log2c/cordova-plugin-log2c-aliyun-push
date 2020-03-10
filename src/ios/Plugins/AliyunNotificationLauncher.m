@@ -383,10 +383,10 @@
 }
 
 #pragma mark - 绑定标签
-- (void)bindTagsWithTags:(NSArray *)tags andCallback:(void (^)(BOOL result))callback{
+- (void)bindTagsWithTags: (int )target :(NSArray *)tags :(NSString *)alias andCallback:(void (^)(BOOL result))callback{
 
-    [CloudPushSDK bindTag:1 withTags:tags
-                withAlias:nil
+    [CloudPushSDK bindTag:target withTags:tags
+                withAlias:alias
              withCallback:^(CloudPushCallbackResult *res) {
 
         callback(res.success);
@@ -404,9 +404,9 @@
 
 
 #pragma mark - 解除标签
-- (void)unbindTagsWithTags:(NSArray *)tags andCallback:(void (^)(BOOL result))callback{
+- (void)unbindTagsWithTags: (int )target :(NSArray *)tags :(NSString *)alias  andCallback:(void (^)(BOOL result))callback{
 
-    [CloudPushSDK unbindTag:2 withTags:tags withAlias:@"" withCallback:^(CloudPushCallbackResult *res) {
+    [CloudPushSDK unbindTag:target withTags:tags withAlias:alias withCallback:^(CloudPushCallbackResult *res) {
         callback(res.success);
     }];
 }

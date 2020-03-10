@@ -30,9 +30,9 @@
 
 - (void)bindAccountWithAccount:(NSString *)account andCallback:(void (^)(BOOL result))callback;
 
-- (void)bindTagsWithTags:(NSArray *)tags andCallback:(void (^)(BOOL result))callback;
+- (void)bindTagsWithTags: (int )target :(NSArray *)tags :(NSString *)alias andCallback:(void (^)(BOOL result))callback;
 
-- (void)unbindTagsWithTags:(NSArray *)tags andCallback:(void (^)(BOOL result))callback;
+- (void)unbindTagsWithTags:(int )target :(NSArray *)tags :(NSString *)alias andCallback:(void (^)(BOOL result))callback;
 
 - (void)listTagsAndCallback:(void (^)(id result))callback;
 

@@ -291,10 +291,11 @@
  *绑定标签
  */
 - (void)bindTags:(CDVInvokedUrlCommand*)command{
-    NSArray *tags = [command.arguments objectAtIndex:0];
+    int target = [(NSNumber *)[command.arguments objectAtIndex:0] intValue];
+    NSArray *tags = [command.arguments objectAtIndex:1];
+    NSString *alias = command.arguments.count > 2 ? [command.arguments objectAtIndex:2] : nil;
 
-    [[AliyunNotificationLauncher sharedAliyunNotificationLauncher] bindTagsWithTags:tags andCallback:^(BOOL result) {
-
+    [[AliyunNotificationLauncher sharedAliyunNotificationLauncher] bindTagsWithTags:target :tags :alias andCallback:^(BOOL result) {
         CDVPluginResult *cdvresult;
 
         if(result){
@@ -312,9 +313,11 @@
  *解绑定标签
  */
 - (void)unbindTags:(CDVInvokedUrlCommand*)command{
-    NSArray *tags = [command.arguments objectAtIndex:0];
+    int target = [(NSNumber *)[command.arguments objectAtIndex:0] intValue];
+    NSArray *tags = [command.arguments objectAtIndex:1];
+    NSString *alias = command.arguments.count > 2 ? [command.arguments objectAtIndex:2] : nil;
 
-    [[AliyunNotificationLauncher sharedAliyunNotificationLauncher] unbindTagsWithTags:tags andCallback:^(BOOL result) {
+    [[AliyunNotificationLauncher sharedAliyunNotificationLauncher] unbindTagsWithTags:target :tags :alias andCallback:^(BOOL result) {
 
         CDVPluginResult *cdvresult;
 
