@@ -75,6 +75,13 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
 
 ## 使用
 
+### `ionic`中使用(可选)
+
+为`typescript`大法好添加了`ts`声明,需要的可以根据下列步骤操作
+1. 根据上面步骤添加`plugin`
+1. 请切换到**[@ionic-native](https://github.com/log2c/cordova-plugin-aliyunpush/tree/%40ionic-native)**分支,根据`README.md`操作使用
+
+
 ### API
 
 ```
@@ -130,6 +137,30 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
     listTags: function(successCallback, errorCallback)
 
     /**
+     * 添加别名
+     * @param  {Function} successCallback 成功回调
+     * @param  {Function} errorCallback   失败回调
+     * @return {void}
+     */
+    addAlias: function (alias, successCallback, errorCallback)
+
+    /**
+     * 解绑别名
+     * @param  {Function} successCallback 成功回调
+     * @param  {Function} errorCallback   失败回调
+     * @return {void}
+     */
+    removeAlias: function (alias, successCallback, errorCallback)
+
+    /**
+     * 删除别名
+     * @param  {Function} successCallback 成功回调
+     * @param  {Function} errorCallback   失败回调
+     * @return {void}
+     */
+    listAliases: function (successCallback, errorCallback)
+
+    /**
       * 没有权限时，请求开通通知权限，其他路过
       * @param  string msg  请求权限的描述信息
       * @param {} successCallback
@@ -169,7 +200,7 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
 
 1. `Android 8.0`以上无法获取到`Token`
     检查是否配置了`network_security_config.xml`信息，具体百度了解
-    
+
 1. `iOS`无法获取到`Token`
     `Xcode`中确认开启以下两项
     ![](https://raw.githubusercontent.com/log2c/cordova-plugin-aliyunpush/develop/screenshoot/iOS_notification_config.png)
