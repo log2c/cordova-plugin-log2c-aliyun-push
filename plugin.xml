@@ -31,6 +31,7 @@
             <meta-data android:name="MI_PUSH_APP_ID" android:value="\ $MIPUSH_APPID"/>
             <meta-data android:name="MI_PUSH_APP_KEY" android:value="\ $MIPUSH_APPKEY"/>
             <meta-data android:name="com.huawei.hms.client.appid" android:value="appid=$HUAWEI_APPID"/>
+            <meta-data android:name="aliyun_enable_debug" android:value="false"/>
             <activity android:name="com.alipush.PopupPushActivity" android:exported="true" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
             <receiver android:exported="false" android:name="com.alipush.PushMessageReceiver">
                 <intent-filter>
@@ -75,6 +76,8 @@
                 <string>$IOS_APP_KEY</string>
                 <key>appSecret</key>
                 <string>$IOS_APP_SECRET</string>
+                <key>aliyun_enable_debug</key>
+		        <false/>
             </dict>
         </config-file>
         <header-file src="src/ios/Plugins/AliyunPush.h" />

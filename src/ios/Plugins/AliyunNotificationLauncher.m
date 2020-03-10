@@ -144,14 +144,17 @@
     NSString *appKey = [aliyunPushConfig objectForKey:@"appKey"];
     NSString *appSecret = [aliyunPushConfig objectForKey:@"appSecret"];
 
-    // 正式上线建议关闭
-    [CloudPushSDK turnOnDebug];
+    Boolean enableDebug = [[aliyunPushConfig objectForKey:@"aliyun_enable_debug"] boolValue];
+
+    if (enableDebug) {
+        [CloudPushSDK turnOnDebug];
+    }
 
     [CloudPushSDK asyncInit:appKey appSecret:appSecret callback:^(CloudPushCallbackResult *res) {
             if (res.success) {
                 NSLog(@"Push SDK init success, deviceId: %@.", [CloudPushSDK getDeviceId]);
             } else {
-                    NSLog(@"Push SDK init failed, error: %@", res.error);
+                NSLog(@"Push SDK init failed, error: %@", res.error);
             }
     }];
 }

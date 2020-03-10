@@ -63,46 +63,34 @@ public class PushUtils {
     static void initPushService(final Application application) throws PackageManager.NameNotFoundException {
         PushServiceFactory.init(application);
         final CloudPushService pushService = PushServiceFactory.getCloudPushService();
-         pushService.setLogLevel(CloudPushService.LOG_DEBUG);
-         pushService.register(application, new CommonCallback() {
-             @Override
-             public void onSuccess(String response) {
-                 String deviceId = pushService.getDeviceId();
-                 Log.d(TAG, "deviceId: " + deviceId);
-//                 pushService.addAlias("test", new CommonCallback() {
-//                     @Override
-//                     public void onSuccess(String s) {
-//                         Log.d(TAG, "onSuccess: " + s);
-//                     }
-//
-//                     @Override
-//                     public void onFailed(String s, String s1) {
-//                         Log.e(TAG, "onFailed: " + s + ", " + s1);
-//                     }
-//                 });
-             }
+        final ApplicationInfo appInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);
+        final boolean enableDebug = appInfo.metaData.getBoolean("aliyun_enable_debug", false);
+        if (enableDebug) {
+            pushService.setLogLevel(CloudPushService.LOG_DEBUG);
+        }
+        pushService.register(application, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                String deviceId = pushService.getDeviceId();
+                Log.d(TAG, "deviceId: " + deviceId);
+            }
 
-             @Override
-             public void onFailed(String errorCode, String errorMessage) {
-                 Log.d(TAG, "init cloudChannel failed -- errorCode:" + errorCode + " -- errorMessage:" + errorMessage);
-             }
-         });
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                Log.d(TAG, "init cloudChannel failed -- errorCode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
 
         createDefaultChannel(application);
 
-        // 5. 在应用中初始化辅助通道
-        // 注册方法会自动判断是否支持小米系统推送，如不支持会跳过注册。
-        ApplicationInfo appInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);
         String miPushAppId = appInfo.metaData.getString("MI_PUSH_APP_ID", "").trim();
         String miPushAppKey = appInfo.metaData.getString("MI_PUSH_APP_KEY", "").trim();
         if (!TextUtils.isEmpty(miPushAppId) && !TextUtils.isEmpty(miPushAppKey)) {
             Log.i(TAG, String.format("MiPush appId:%1$s, appKey:%2$s", miPushAppId, miPushAppKey));
             MiPushRegister.register(application, miPushAppId, miPushAppKey);
         }
-        // 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
         HuaWeiRegister.register(application);
 
-        // GCM/FCM辅助通道注册
         // GcmRegister.register(this, sendId, applicationId);
     }
 
