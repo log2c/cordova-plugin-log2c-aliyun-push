@@ -1,0 +1,5 @@
+
+"aliyun_dialog_title" = "Require notification permission";
+"aliyun_dialog_message" = "Please turn on the notification permission.";
+"aliyun_dialog_negative_text" = "IGNORE";
+"aliyun_dialog_positive_text" = "SETTING";

@@ -1,7 +1,14 @@
 package com.alipush;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
@@ -27,16 +34,20 @@ public class AliyunPush extends CordovaPlugin {
      * JS回调接口对象
      */
     static CallbackContext pushCallbackContext = null;
-
-
     private final CloudPushService pushService = PushServiceFactory.getCloudPushService();
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        new PushUtils(cordova.getActivity()).isShowNoticeDialog(cordova.getActivity(), null);
     }
 
+    @Override
+    protected void pluginInitialize() {
+        super.pluginInitialize();
+        if (!isNotificationEnabled(cordova.getContext())) {
+            showRequestNotifyDialog(cordova.getActivity(), null);
+        }
+    }
 
     /**
      * 插件主入口
@@ -54,9 +65,14 @@ public class AliyunPush extends CordovaPlugin {
                 new PushUtils(cordova.getActivity()).getNotice();
             }
             ret = true;
+        } else if ("isEnableNotification".equalsIgnoreCase(action)) {
+            boolean enable = isNotificationEnabled(cordova.getContext());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("enable", enable);
+            callbackContext.success(jsonObject);
+            ret = true;
         } else if ("requireNotifyPermission".equalsIgnoreCase(action)) {
-            final String msg = args.getString(0);
-            this.cordova.getActivity().runOnUiThread(() -> new PushUtils(cordova.getActivity()).isShowNoticeDialog(cordova.getActivity(), msg));
+            showRequestNotifyDialog(cordova.getActivity(), callbackContext);
             ret = true;
         } else if ("getRegisterId".equalsIgnoreCase(action)) {
             callbackContext.success(pushService.getDeviceId());
@@ -214,5 +230,64 @@ public class AliyunPush extends CordovaPlugin {
             arr[i] = array.optString(i);
         }
         return arr;
+    }
+
+    /**
+     * 判断允许通知，是否已经授权
+     * 返回值为true时，通知栏打开，false未打开。
+     *
+     * @param context 上下文
+     */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private static boolean isNotificationEnabled(Context context) {
+        return NotificationManagerCompat.from(context).areNotificationsEnabled();
+    }
+
+    /**
+     * 跳转到app的设置界面--开启通知
+     *
+     * @param context Context
+     */
+    private static void goToNotificationSetting(Activity context) {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= 26) {
+            // android 8.0引导
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());
+        } else if (Build.VERSION.SDK_INT >= 21) {
+            // android 5.0-7.0
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", context.getPackageName());
+            intent.putExtra("app_uid", context.getApplicationInfo().uid);
+        } else {
+            // 其他
+            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            intent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    private static void showRequestNotifyDialog(final Activity context, final CallbackContext callbackContext) {
+        final Resources resources = context.getResources();
+        final int title = resources.getIdentifier("aliyun_dialog_title", "string", context.getPackageName());
+        final int msg = resources.getIdentifier("aliyun_dialog_message", "string", context.getPackageName());
+        final int negativeText = resources.getIdentifier("aliyun_dialog_negative_text", "string", context.getPackageName());
+        final int positiveText = resources.getIdentifier("aliyun_dialog_positive_text", "string", context.getPackageName());
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(msg)
+                .setNegativeButton(negativeText, (dialog, which) -> {
+                    if (callbackContext != null) {
+                        callbackContext.error("Permission dined.");
+                    }
+                })
+                .setPositiveButton(positiveText, (dialog, which) -> {
+                    goToNotificationSetting(context);
+                    if (callbackContext != null) {
+                        callbackContext.success();
+                    }
+                })
+                .create().show();
     }
 }

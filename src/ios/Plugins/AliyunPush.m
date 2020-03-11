@@ -16,9 +16,6 @@
 - (void)pluginInitialize{
 
     [super pluginInitialize];
-
-      NSLog(@"x-->pluginInitialize");
-
     // 推送通知 注册
     [[NSNotificationCenter defaultCenter] addObserver:self
                                             selector:@selector(onNotificationReceived:)
@@ -32,7 +29,7 @@
                                                object:nil];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self requireNotifyPermisssion:nil];
+        [self requireNotifyPermission:nil];
     });
 }
 
@@ -40,23 +37,19 @@
 /**
   弹出通知请求
  */
-- (void)requireNotifyPermisssion:(NSString *)msg{
+- (void)requireNotifyPermission:(CDVInvokedUrlCommand*)command{
+    NSString *title = NSLocalizedString(@"aliyun_dialog_title", nil);
+    NSString *message = NSLocalizedString(@"aliyun_dialog_message", nil);
+    NSString *cancelText = NSLocalizedString(@"aliyun_dialog_negative_text", nil);
+    NSString *settingText = NSLocalizedString(@"aliyun_dialog_positive_text", nil);
 
-    self.alertmsg = msg?msg:@"建议你开启通知权限，第一时间收到提醒";
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
 
-    if(![self judgeOneDate]){
-        [self isUserNotificationEnable];
-    }
-}
+    [alertController addAction:[UIAlertAction actionWithTitle:cancelText style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:SWIFT_CDVCommandStatus_ERROR] callbackId:command.callbackId];
+    }]];
 
-
-- (void)showNotifyAlert:(NSString *) message{
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"开启推送通知" message:message preferredStyle:UIAlertControllerStyleAlert];
-
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { NSLog(@"点击取消");}]];
-
-    [alertController addAction:[UIAlertAction actionWithTitle:@"设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:[UIAlertAction actionWithTitle:settingText style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
         if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0f) {
 
@@ -64,65 +57,11 @@
         }else{
              [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
         }
-
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
     }]];
 
     [self.viewController presentViewController:alertController animated:YES completion:^{}];
 }
-
-
-- (BOOL)judgeOneDate{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSString *nowday = [formatter stringFromDate:[NSDate date]];
-
-    NSString *saveday = [[NSUserDefaults standardUserDefaults] objectForKey:@"NOTIFY_DAY"];
-
-    if(saveday && [saveday isEqualToString:nowday]){
-        //是同一天
-        return YES;
-    }else{
-        [[NSUserDefaults standardUserDefaults] setObject:nowday forKey:@"NOTIFY_DAY"];
-        return NO;
-    }
-}
-
- // 判断用户是否允许接收通知
-- (BOOL)isUserNotificationEnable {
-    __block BOOL isEnable = NO;
-//    __weak typeof(self) weakSelf = self;
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0f) { // iOS版本 >=10.0 处理逻辑
-
-        [[UNUserNotificationCenter currentNotificationCenter]getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-            if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
-                isEnable = NO;
-
-                //拒绝调用 且今天没调用过
-                NSInteger x =( arc4random() % 11) ;
-                if(x%3 == 0){
-                    [self showNotifyAlert:self.alertmsg];
-                }
-
-            }else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
-                isEnable = YES;
-            }
-        }];
-
-    } else { // iOS版本 <8.0 处理逻辑
-        if ([[UIApplication sharedApplication] currentUserNotificationSettings].types  == UIRemoteNotificationTypeNone) {
-             isEnable = NO;
-            //拒绝调用 且今天没调用过
-            NSInteger x =( arc4random() % 11) ;
-            if(x%3 == 0){
-                [self showNotifyAlert:self.alertmsg];
-            }
-        }else {
-            isEnable = YES;
-        }
-    }
-    return isEnable;
-}
-
 
 #pragma mark AliyunNotification通知
 - (void)onNotificationReceived:(NSNotification *)notification {
@@ -237,6 +176,36 @@
     }
 
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
+/**
+ * 是否开启了通知功能
+ */
+- (void)isEnableNotification:(CDVInvokedUrlCommand*)command{
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+
+    [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *settings){
+        BOOL enable = false;
+        switch (settings.authorizationStatus) {
+            case UNAuthorizationStatusAuthorized: {
+                enable = true;
+                break;
+            }
+            case UNAuthorizationStatusDenied: {
+                enable = false;
+                break;
+            }
+            default: {
+                enable = false;
+                break;
+            }
+        }
+        NSDictionary *dict = [NSDictionary dictionaryWithObject:@(enable)forKey:@"enable" ];
+
+        CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
 }
 
 /**

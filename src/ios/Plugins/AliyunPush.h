@@ -31,9 +31,14 @@
 - (void)unbindAccount:(CDVInvokedUrlCommand*)command;
 
 /**
+ * 是否开启了通知
+ */
+- (void)isEnableNotification:(CDVInvokedUrlCommand*)command;
+
+/**
  * 阿里云推送
  */
-- (void)requireNotifyPermisssion:(NSString *)msg;
+- (void)requireNotifyPermisssion:(CDVInvokedUrlCommand*)command;
 
 /**
  *绑定标签
