@@ -25,7 +25,7 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
 * 安装插件
 
     ```bash
-      cordova plugin add https://github.com/log2c/cordova-plugin-aliyunpush.git \
+      cordova plugin add cordova-plugin-log2c-aliyun-push \
       --variable ANDROID_APP_KEY="***" \
       --variable ANDROID_APP_SECRET="***" \
       --variable IOS_APP_KEY="***" \

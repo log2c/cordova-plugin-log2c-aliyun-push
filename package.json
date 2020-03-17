@@ -1,14 +1,14 @@
 {
-  "_resolved": "git+https://github.com/log2c/cordova-plugin-aliyunpush.git",
+  "_resolved": "git+https://github.com/log2c/cordova-plugin-log2c-aliyun-push.git",
   "author": {
     "name": "log2c"
   },
   "bugs": {
-    "url": "https://github.com/log2c/cordova-plugin-aliyunpush/issues"
+    "url": "https://github.com/log2c/cordova-plugin-log2c-aliyun-push/issues"
   },
   "bundleDependencies": false,
   "cordova": {
-    "id": "cordova-plugin-aliyunpush",
+    "id": "cordova-plugin-log2c-aliyun-push",
     "platforms": [
       "android",
       "ios"
@@ -22,7 +22,7 @@
       "version": ">=5.0.0"
     }
   ],
-  "homepage": "https://github.com/log2c/cordova-plugin-aliyunpush.git#readme",
+  "homepage": "https://github.com/log2c/cordova-plugin-log2c-aliyun-push.git#readme",
   "keywords": [
     "cordova",
     "aliyun",
@@ -31,10 +31,10 @@
     "cordova-android"
   ],
   "license": "Apache 2.0",
-  "name": "cordova-plugin-aliyunpush",
+  "name": "cordova-plugin-log2c-aliyun-push",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/log2c/cordova-plugin-aliyunpush.git"
+    "url": "git+https://github.com/log2c/cordova-plugin-log2c-aliyun-push.git"
   },
-  "version": "1.1.0"
+  "version": "1.2.1"
 }

@@ -38,10 +38,10 @@
   弹出通知请求
  */
 - (void)requireNotifyPermission:(CDVInvokedUrlCommand*)command{
-    NSString *title = NSLocalizedString(@"aliyun_dialog_title", nil);
-    NSString *message = NSLocalizedString(@"aliyun_dialog_message", nil);
-    NSString *cancelText = NSLocalizedString(@"aliyun_dialog_negative_text", nil);
-    NSString *settingText = NSLocalizedString(@"aliyun_dialog_positive_text", nil);
+    NSString *title = NSLocalizedStringWithDefaultValue(@"aliyun_dialog_title", @"Localizable", NSBundle.mainBundle, @"Require notification permission", nil);
+    NSString *message = NSLocalizedStringWithDefaultValue(@"aliyun_dialog_message", @"Localizable", NSBundle.mainBundle, @"Please turn on the notification permission.", nil);
+    NSString *cancelText = NSLocalizedStringWithDefaultValue(@"aliyun_dialog_negative_text", @"Localizable", NSBundle.mainBundle, @"IGNORE", nil);
+    NSString *settingText = NSLocalizedStringWithDefaultValue(@"aliyun_dialog_positive_text", @"Localizable", NSBundle.mainBundle, @"SETTING", nil);
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
 
