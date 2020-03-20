@@ -36,5 +36,5 @@
     "type": "git",
     "url": "git+https://github.com/log2c/cordova-plugin-log2c-aliyun-push.git"
   },
-  "version": "1.2.2"
+  "version": "1.2.3"
 }
