@@ -36,16 +36,10 @@
     if (remoteNotification) {
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;//infoDict是在AppDelegate的.h文件中申明的一个不可变字典
         _remoteinfo = remoteNotification;
-
-
     }
 
-
-    // APNs注册，获取deviceToken并上报
-    [self registerAPNS:application];
-
     // 初始化SDK
-    [self initCloudPush];
+    [self initCloudPush:application];
 
     // 监听推送通道打开动作
     [self listenerOnChannelOpened];
@@ -136,7 +130,7 @@
 
 
 #pragma mark SDK Init AliyunEmasServices-Info.plist
-- (void)initCloudPush {
+- (void)initCloudPush: (UIApplication *)application {
 
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
     NSDictionary *aliyunPushConfig = [infoDictionary objectForKey:@"aliyun push config"];
@@ -153,6 +147,8 @@
     [CloudPushSDK asyncInit:appKey appSecret:appSecret callback:^(CloudPushCallbackResult *res) {
             if (res.success) {
                 NSLog(@"Push SDK init success, deviceId: %@.", [CloudPushSDK getDeviceId]);
+                // APNs注册，获取deviceToken并上报
+                [self registerAPNS:application];
             } else {
                 NSLog(@"Push SDK init failed, error: %@", res.error);
             }
@@ -255,16 +251,7 @@
     [CloudPushSDK sendNotificationAck:userInfo];
 }
 
-- (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
 
-    [CloudPushSDK registerDevice:deviceToken withCallback:^(CloudPushCallbackResult *res) {
-        if (res.success) {
-            NSLog(@"Register deviceToken success, deviceToken: %@", [CloudPushSDK getApnsDeviceToken]);
-        } else {
-            NSLog(@"Register deviceToken failed, error: %@", res.error);
-        }
-    }];
-}
 
 #pragma mark -触发通知动作回调 、、 点击、删除通知
 /**
