@@ -139,22 +139,18 @@
  */
 - (void)onMessage:(CDVInvokedUrlCommand*)command{
 
-
     NSDictionary *remoteinfo =  [[AliyunNotificationLauncher sharedAliyunNotificationLauncher] getRemoteInfo];
 
-    if(!self.messageCommand && remoteinfo ){
+    NSMutableDictionary *newContent = [[NSMutableDictionary alloc] initWithDictionary:remoteinfo];
+    [newContent removeObjectForKey:@"aps"];
+    [newContent removeObjectForKey:@"i"];
+    [newContent removeObjectForKey:@"m"];
+    [newContent setObject:@"notificationOpened" forKey:@"type"];
 
-        NSMutableDictionary *newContent = [[NSMutableDictionary alloc] initWithDictionary:remoteinfo];
-        [newContent removeObjectForKey:@"aps"];
-        [newContent removeObjectForKey:@"i"];
-        [newContent removeObjectForKey:@"m"];
-        [newContent setObject:@"notificationOpened" forKey:@"type"];
-
-        CDVPluginResult *result;
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:newContent];
-        [result setKeepCallbackAsBool:true];
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    }
+    CDVPluginResult *result;
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:newContent];
+    [result setKeepCallbackAsBool:true];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 
     self.messageCommand = command;
 }

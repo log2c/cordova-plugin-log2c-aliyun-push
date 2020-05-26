@@ -60,10 +60,11 @@ public class AliyunPush extends CordovaPlugin {
         boolean ret = false;
 
         if ("onMessage".equalsIgnoreCase(action)) {
-            if (pushCallbackContext == null) {
-                pushCallbackContext = callbackContext;
-                new PushUtils(cordova.getActivity()).getNotice();
+            if (pushCallbackContext != null) {
+                pushCallbackContext = null;
             }
+            pushCallbackContext = callbackContext;
+            new PushUtils(cordova.getActivity()).getNotice();
             ret = true;
         } else if ("isEnableNotification".equalsIgnoreCase(action)) {
             boolean enable = isNotificationEnabled(cordova.getContext());
