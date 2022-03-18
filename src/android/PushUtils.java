@@ -35,7 +35,7 @@ public class PushUtils {
      *
      * @param application Application
      */
-    static void initPushService(final Application application) throws PackageManager.NameNotFoundException {
+    public static void initPushService(final Application application) throws PackageManager.NameNotFoundException {
         PushServiceFactory.init(application);
         final CloudPushService pushService = PushServiceFactory.getCloudPushService();
         final ApplicationInfo appInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);

@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
@@ -24,6 +22,9 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationManagerCompat;
 
 /**
  * This class echoes a string called from JavaScript.

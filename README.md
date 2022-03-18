@@ -26,17 +26,17 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
 
     ```bash
       cordova plugin add cordova-plugin-log2c-aliyun-push \
-      --variable ANDROID_APP_KEY="***" \
-      --variable ANDROID_APP_SECRET="***" \
-      --variable IOS_APP_KEY="***" \
-      --variable IOS_APP_SECRET="***" \
-      --variable HUAWEI_APPID="***" \
-      --variable MIPUSH_APPID="***" \
-      --variable MIPUSH_APPKEY="***" \
+      --variable ANDROID_APP_KEY="*" \
+      --variable ANDROID_APP_SECRET="*" \
+      --variable IOS_APP_KEY="*" \
+      --variable IOS_APP_SECRET="*" \
+      --variable HUAWEI_APPID="*" \
+      --variable MIPUSH_APPID="*" \
+      --variable MIPUSH_APPKEY="*" \
       --variable CHANNEL_ID="0"
     ```
     * 注意
-        * 将`*`号替换成你自己申请的密钥信息,如无则不填写或保持`*`号(不影响正常运行)
+        * 将`*`号替换成你自己申请的密钥信息,如无则可填`*`
         * `CHANNEL_ID`对应`Android 8.0`的通知通道,根据实际情况填写(`Android`开发者都懂什么意思)
 
 
@@ -59,16 +59,11 @@ Cordova 阿里云移动推送插件，现只包含`MiPush`、`Huawei`两个厂�
     2. 若你已经自定义了`Application`,则只要在你的`Application`中调用
 
         ```java
-            import static com.alipush.PushUtils.initPushService;
             //start
             @Override
                 public void onCreate() {
                     super.onCreate();
-                    try {
-                        initPushService(this);
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    com.alipush.PushApplication.init(this);
                 }
             //end
         ```

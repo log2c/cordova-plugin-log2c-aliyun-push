@@ -6,6 +6,9 @@ buildscript {
         mavenCentral()
         jcenter()
         mavenLocal()
+        maven {
+            url 'https://developer.huawei.com/repo/'
+        }
     }
 }
 
@@ -13,15 +16,26 @@ repositories{
     maven {
         url 'https://maven.aliyun.com/nexus/content/repositories/releases/'
     }
+    mavenCentral()
+    jcenter()
+    mavenLocal()
+    maven {
+        url 'https://developer.huawei.com/repo/'
+    }
 }
 
 dependencies {
-    implementation 'com.android.support:support-compat:27.+'
-
-    implementation 'com.aliyun.ams:alicloud-android-push:3.1.6'
-    // 三方辅助通道
-    implementation 'com.aliyun.ams:alicloud-android-third-push:3.0.10@aar'
-    // 华为
-    implementation 'com.aliyun.ams:huawei-push:2.6.3.305'
-    implementation 'com.aliyun.ams:huawei-push-base:2.6.3.305'
+    implementation 'com.aliyun.ams:alicloud-android-push:3.7.5'
+    //华为依赖
+    implementation 'com.aliyun.ams:alicloud-android-third-push-huawei:3.7.4'
+    //小米依赖
+    implementation 'com.aliyun.ams:alicloud-android-third-push-xiaomi:3.7.4'
+    //OPPO依赖
+    implementation 'com.aliyun.ams:alicloud-android-third-push-oppo:3.7.4'
+    //vivo依赖
+    implementation 'com.aliyun.ams:alicloud-android-third-push-vivo:3.7.4'
+    //魅族依赖
+    implementation 'com.aliyun.ams:alicloud-android-third-push-meizu:3.7.4'
+    //谷歌依赖
+    implementation 'com.aliyun.ams:alicloud-android-third-push-fcm:3.7.4'
 }

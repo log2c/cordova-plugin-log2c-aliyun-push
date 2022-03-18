@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.AndroidPopupActivity;
@@ -16,6 +15,8 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import androidx.annotation.RequiresApi;
 
 public class PopupPushActivity extends AndroidPopupActivity {
     private static final String TAG = PopupPushActivity.class.getSimpleName();
